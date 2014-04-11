@@ -59,7 +59,8 @@ public partial class MainWindow: Gtk.Window
 	{
         var box = sender as ComboBox;
         _selectedOutput.DeviceNumber = box.Active;
-    }
+    }
+
     protected void OnExitClicked(object sender, EventArgs e)
     {
         Environment.Exit(0);
