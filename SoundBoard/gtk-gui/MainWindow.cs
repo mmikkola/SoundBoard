@@ -5,11 +5,14 @@ public partial class MainWindow
 {
 	private global::Gtk.UIManager UIManager;
 	private global::Gtk.Action FileAction;
+	private global::Gtk.Action FileAction1;
+	private global::Gtk.Action AddAction;
+	private global::Gtk.Action ExitAction;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HBox hbox1;
 	private global::Gtk.Label label1;
-	private global::Gtk.ComboBox combobox2;
+	private global::Gtk.ComboBox devComboBox;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TreeView treeview;
 
@@ -22,6 +25,15 @@ public partial class MainWindow
 		this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
 		this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
 		w1.Add (this.FileAction, null);
+		this.FileAction1 = new global::Gtk.Action ("FileAction1", global::Mono.Unix.Catalog.GetString ("File"), null, null);
+		this.FileAction1.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
+		w1.Add (this.FileAction1, null);
+		this.AddAction = new global::Gtk.Action ("AddAction", global::Mono.Unix.Catalog.GetString ("Add"), null, null);
+		this.AddAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Add");
+		w1.Add (this.AddAction, null);
+		this.ExitAction = new global::Gtk.Action ("ExitAction", global::Mono.Unix.Catalog.GetString ("Exit"), null, null);
+		this.ExitAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Exit");
+		w1.Add (this.ExitAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -32,8 +44,9 @@ public partial class MainWindow
 		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><menubar name=\'menubar2\'><menu name=\'FileAction\' action=\'FileAction\'/></menub" +
-		"ar></ui>");
+		this.UIManager.AddUiFromString ("<ui><menubar name=\'menubar2\'><menu name=\'FileAction1\' action=\'FileAction1\'><menui" +
+		"tem name=\'AddAction\' action=\'AddAction\'/><menuitem name=\'ExitAction\' action=\'Exi" +
+		"tAction\'/></menu></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox1.Add (this.menubar2);
@@ -48,20 +61,18 @@ public partial class MainWindow
 		// Container child hbox1.Gtk.Box+BoxChild
 		this.label1 = new global::Gtk.Label ();
 		this.label1.Name = "label1";
-		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
+		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Output Device");
 		this.hbox1.Add (this.label1);
 		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.label1]));
 		w3.Position = 0;
 		w3.Expand = false;
 		w3.Fill = false;
 		// Container child hbox1.Gtk.Box+BoxChild
-		this.combobox2 = global::Gtk.ComboBox.NewText ();
-		this.combobox2.Name = "combobox2";
-		this.hbox1.Add (this.combobox2);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.combobox2]));
+		this.devComboBox = global::Gtk.ComboBox.NewText ();
+		this.devComboBox.Name = "devComboBox";
+		this.hbox1.Add (this.devComboBox);
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.devComboBox]));
 		w4.Position = 1;
-		w4.Expand = false;
-		w4.Fill = false;
 		this.vbox1.Add (this.hbox1);
 		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
 		w5.Position = 1;
@@ -83,9 +94,12 @@ public partial class MainWindow
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
-		this.DefaultWidth = 784;
-		this.DefaultHeight = 537;
+		this.DefaultWidth = 978;
+		this.DefaultHeight = 616;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
+		this.AddAction.Activated += new global::System.EventHandler (this.OnFileOpenClicked);
+		this.ExitAction.Activated += new global::System.EventHandler (this.OnExitClicked);
+		this.treeview.RowActivated += new global::Gtk.RowActivatedHandler (this.OnRowActivated);
 	}
 }

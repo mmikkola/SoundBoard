@@ -7,12 +7,29 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/SoundBoard.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="784 537">
+  <widget class="Gtk.Window" id="MainWindow" design-size="978 616">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">File</property>
         <property name="ShortLabel" translatable="yes">File</property>
+      </action>
+      <action id="FileAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">File</property>
+        <property name="ShortLabel" translatable="yes">File</property>
+      </action>
+      <action id="AddAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Add</property>
+        <property name="ShortLabel" translatable="yes">Add</property>
+        <signal name="Activated" handler="OnFileOpenClicked" />
+      </action>
+      <action id="ExitAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Exit</property>
+        <property name="ShortLabel" translatable="yes">Exit</property>
+        <signal name="Activated" handler="OnExitClicked" />
       </action>
     </action-group>
     <property name="MemberName" />
@@ -26,8 +43,11 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar2">
             <property name="MemberName" />
-            <node name="__gtksharp_121_Stetic_Editor_ActionMenuBar" type="Menubar">
-              <node type="Menu" action="FileAction" />
+            <node name="menubar2" type="Menubar">
+              <node type="Menu" action="FileAction1">
+                <node type="Menuitem" action="AddAction" />
+                <node type="Menuitem" action="ExitAction" />
+              </node>
             </node>
           </widget>
           <packing>
@@ -54,10 +74,11 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.ComboBox" id="combobox2">
+              <widget class="Gtk.ComboBox" id="devComboBox">
                 <property name="MemberName" />
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
+                <signal name="Changed" handler="OnDevComboBoxChanged" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -81,12 +102,26 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
+                <signal name="RowActivated" handler="OnRowActivated" />
               </widget>
             </child>
           </widget>
           <packing>
             <property name="Position">2</property>
             <property name="AutoSize">True</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="statusLabel">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Status</property>
+          </widget>
+          <packing>
+            <property name="PackType">End</property>
+            <property name="Position">3</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
