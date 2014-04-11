@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Gtk;
 using NAudio.Wave;
 using SharpDX.DirectInput;
@@ -9,17 +10,54 @@ public partial class MainWindow: Gtk.Window
 {
     private WaveOut _selectedOutput;
     private WaveOut _primaryOutput;
-    private Dictionary<int, string> _keyToFileMap;
+    private Dictionary<SharpDX.DirectInput.Key, string> _keyToFileMap;
     private Gtk.ListStore _listData;
+    private Keyboard _kb;
+    private string _currentFilePlaying;
+    private SharpDX.DirectInput.Key _currentlyPressed;
+    private bool _playing;
 
 	public MainWindow() : base(Gtk.WindowType.Toplevel)
 	{
 		Build();
 		SetupTreeView();
 		FillDevices();
+        _playing = false;
         _selectedOutput = new WaveOut();
         _primaryOutput = new WaveOut();
         devComboBox.Changed += OnDevComboBoxChanged;
+        var di = new DirectInput();
+        _kb = new Keyboard(di);
+        _kb.Acquire();
+        _keyToFileMap = new Dictionary<SharpDX.DirectInput.Key,string>();
+        (new Thread(() =>
+        {   while(true)
+            {
+                foreach(var k in _keyToFileMap.Keys)
+                {
+                    if(_kb.GetCurrentState().IsPressed(k) && (_currentlyPressed != k))
+                    {
+                        var f = _keyToFileMap[k];
+                        if(_playing && _currentFilePlaying.Equals(f))
+                        {
+                            Stop();
+                        }
+                        else
+                        {
+                            Stop();
+                            Play(f);
+                        }
+                        _currentlyPressed = k;
+                        break;
+                    }
+                }
+                if(!_kb.GetCurrentState().IsPressed(_currentlyPressed))
+                {
+                    _currentlyPressed = SharpDX.DirectInput.Key.Yen;
+                }
+                Thread.Sleep(50);
+            }
+        })).Start();
 	}
 
 	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
@@ -78,12 +116,34 @@ public partial class MainWindow: Gtk.Window
  
     protected void OnRowActivated(object o, RowActivatedArgs args)
     {
+        label2.Text = "Press a key to bind";
+        SharpDX.DirectInput.Key pressed;
+        for(;;)
+        {
+            var kbs = _kb.GetCurrentState();
+            if (kbs.PressedKeys.Count == 1)
+            {
+                pressed = kbs.PressedKeys[0];
+                _currentlyPressed = pressed;
+                break;
+            }
+            else if (kbs.PressedKeys.Count > 1)
+            {
+                label2.Text = "Can only bind one key atm";
+            }
+            Thread.Sleep(50);
+        }
+
         var ts = (o as TreeView).Selection;
         TreeModel model;
         TreeIter iter;
         ts.GetSelected(out model, out iter);
         var file = (string)model.GetValue(iter,0);
-
+        lock (_keyToFileMap)
+        {
+            _keyToFileMap.Add(pressed, file);
+        }
+        model.SetValue(iter,1,pressed.ToString());
     }
 
     private void Play(string file)
@@ -94,11 +154,16 @@ public partial class MainWindow: Gtk.Window
         _selectedOutput.Play();
         _primaryOutput.Init(ws2);
         _primaryOutput.Play();
+        _currentFilePlaying = file;
+        _playing = true;
     }
 
     private void Stop()
     {
+        _playing = false;
         _primaryOutput.Stop();
         _selectedOutput.Stop();
     }
+
+
 }

@@ -15,6 +15,7 @@ public partial class MainWindow
 	private global::Gtk.ComboBox devComboBox;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TreeView treeview;
+	private global::Gtk.Label label2;
 
 	protected virtual void Build ()
 	{
@@ -90,6 +91,17 @@ public partial class MainWindow
 		this.vbox1.Add (this.GtkScrolledWindow);
 		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
 		w7.Position = 2;
+		// Container child vbox1.Gtk.Box+BoxChild
+		this.label2 = new global::Gtk.Label ();
+		this.label2.Name = "label2";
+		this.label2.Xalign = 0.01F;
+		this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
+		this.vbox1.Add (this.label2);
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.label2]));
+		w8.PackType = ((global::Gtk.PackType)(1));
+		w8.Position = 3;
+		w8.Expand = false;
+		w8.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -100,6 +112,7 @@ public partial class MainWindow
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.AddAction.Activated += new global::System.EventHandler (this.OnFileOpenClicked);
 		this.ExitAction.Activated += new global::System.EventHandler (this.OnExitClicked);
+		this.devComboBox.Changed += new global::System.EventHandler (this.OnDevComboBoxChanged);
 		this.treeview.RowActivated += new global::Gtk.RowActivatedHandler (this.OnRowActivated);
 	}
 }

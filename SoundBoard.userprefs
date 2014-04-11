@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="SoundBoard\MainWindow.cs">
     <Files>
-      <File FileName="SoundBoard\MainWindow.cs" Line="80" Column="6" />
+      <File FileName="SoundBoard\MainWindow.cs" Line="109" Column="51" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

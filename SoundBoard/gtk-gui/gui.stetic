@@ -78,7 +78,6 @@
                 <property name="MemberName" />
                 <property name="IsTextCombo">True</property>
                 <property name="Items" translatable="yes" />
-                <signal name="Changed" handler="OnDevComboBoxChanged" after="yes" />
               </widget>
               <packing>
                 <property name="Position">1</property>
@@ -102,7 +101,6 @@
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="ShowScrollbars">True</property>
-                <signal name="RowActivated" handler="OnRowActivated" />
               </widget>
             </child>
           </widget>
@@ -112,9 +110,10 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Label" id="statusLabel">
+          <widget class="Gtk.Label" id="label2">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">Status</property>
+            <property name="Xalign">0.01</property>
+            <property name="LabelProp" translatable="yes">label1</property>
           </widget>
           <packing>
             <property name="PackType">End</property>
